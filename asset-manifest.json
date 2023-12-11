@@ -1,12 +1,12 @@
 {
   "files": {
     "main.css": "/boruta-game/static/css/main.31d6cfe0.css",
-    "main.js": "/boruta-game/static/js/main.7fb60f9f.js",
+    "main.js": "/boruta-game/static/js/main.ae62359c.js",
     "index.html": "/boruta-game/index.html",
-    "main.7fb60f9f.js.map": "/boruta-game/static/js/main.7fb60f9f.js.map"
+    "main.ae62359c.js.map": "/boruta-game/static/js/main.ae62359c.js.map"
   },
   "entrypoints": [
     "static/css/main.31d6cfe0.css",
-    "static/js/main.7fb60f9f.js"
+    "static/js/main.ae62359c.js"
   ]
 }
