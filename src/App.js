@@ -1,13 +1,14 @@
 import { useEffect, useState } from 'react';
 import { Typography, Flex, Card, Space, Button } from 'antd';
 import { RocketOutlined } from '@ant-design/icons';
-import questionsJson from './questions.json';
 import shuffle from './Misc';
 
 const { Title } = Typography;
 
 function App() {
   document.title = 'Boruta Christmas Game';
+  const JSON_URL = 'https://api.npoint.io/8354f2e0929a8aecf8b2';
+
   const [questions, setQuestions] = useState(new Map());
   const [order, setOrder] = useState([]);
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -40,18 +41,26 @@ function App() {
 
   useEffect(() => {
     setIsLoading(true);
-    var questionsMap = new Map(questionsJson.map((val, i) => [i, val]));
-    setQuestions(questionsMap);
-    var save = localStorage.getItem('save');
-    var saveJson = JSON.parse(save);
-    if (saveJson?.questionsCount !== questions.size) {
-      saveJson = null;
-    }
-    var order = saveJson?.order ?? shuffle([...questionsMap.keys()]);
-    setOrder(order);
-    var currentIndex = saveJson?.currentIndex ?? 0;
-    setCurrentIndex(currentIndex);
-    setIsLoading(false);
+
+    const fetchJson = async () => {
+      const response = await fetch(JSON_URL);
+      if (!response.ok) throw Error('empty data');
+      const questions = await response.json();
+      var questionsMap = new Map(questions.map((val, i) => [i, val]));
+      setQuestions(questionsMap);
+      var save = localStorage.getItem('save');
+      var saveJson = JSON.parse(save);
+      if (saveJson?.questionsCount !== questions.size) {
+        saveJson = null;
+      }
+      var order = saveJson?.order ?? shuffle([...questionsMap.keys()]);
+      setOrder(order);
+      var currentIndex = saveJson?.currentIndex ?? 0;
+      setCurrentIndex(currentIndex);
+      setIsLoading(false);
+    };
+
+    fetchJson();
   }, []);
 
   const save = (currentIndex) => {
