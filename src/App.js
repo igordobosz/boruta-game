@@ -40,17 +40,17 @@ function App() {
   };
 
   useEffect(() => {
-    setIsLoading(true);
-
     const fetchJson = async () => {
+      setIsLoading(true);
       const response = await fetch(JSON_URL);
       if (!response.ok) throw Error('empty data');
-      const questions = await response.json();
-      var questionsMap = new Map(questions.map((val, i) => [i, val]));
+      const questionsJson = await response.json();
+      questionsJson.sort();
+      var questionsMap = new Map(questionsJson.map((val, i) => [i, val]));
       setQuestions(questionsMap);
       var save = localStorage.getItem('save');
       var saveJson = JSON.parse(save);
-      if (saveJson?.questionsCount !== questions.size) {
+      if (saveJson?.questionsCount !== questionsJson.length) {
         saveJson = null;
       }
       var order = saveJson?.order ?? shuffle([...questionsMap.keys()]);
